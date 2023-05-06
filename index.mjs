@@ -2,7 +2,10 @@ import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
 import ky from "ky-universal";
-dotenv.config();
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const API_URL = "https://globalapi.solarmanpv.com";
 const APP_ID = process.env.APP_ID;
@@ -10,15 +13,14 @@ const API_KEY = process.env.API_KEY;
 const PASSWORD = process.env.PASSWORD;
 const EMAIL = process.env.EMAIL;
 const DEVICE_SN = process.env.DEVICE_SN;
-const baseDir = process.env.BASE_DIR;
 
-if (!baseDir || !APP_ID || !API_KEY || !PASSWORD || !EMAIL) {
+if (!APP_ID || !API_KEY || !PASSWORD || !EMAIL) {
   throw new Error("invalid env vars");
 }
 
-const STATE_FILE = path.join(baseDir, "state.json");
-const POWER_FILE = path.join(baseDir, "pvpower");
-const ERROR_FILE = path.join(baseDir, "error.log");
+const STATE_FILE = path.join(__dirname, "state.json");
+const POWER_FILE = path.join(__dirname, "pvpower");
+const ERROR_FILE = path.join(__dirname, "error.log");
 
 async function getToken() {
   const resp = await ky
