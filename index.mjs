@@ -51,7 +51,7 @@ async function getPower(token) {
   return (
     (
       Number(resp.dataList.find((d) => d.key === "APo_t1")?.value) / 1000
-    ).toFixed(2) || 0
+    ).toFixed(2) || (0).toFixed(2)
   );
 }
 
